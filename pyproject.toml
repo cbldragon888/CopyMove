@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "copymove-lab"
+version = "0.1.0"
+description = "A reproducible playground for scientific copy-move image blending"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["numpy>=1.26,<3", "Pillow>=10,<13", "opencv-python-headless>=4.10,<5"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.9,<1"]
+
+[project.scripts]
+copymove-lab = "copymove_lab.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["copymove_lab*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110

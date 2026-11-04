@@ -1,0 +1,29 @@
+{
+  "title": "Cell floating in saline",
+  "license": "CC0-1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "source_project": "scikit-image",
+  "source_version": "0.25.2",
+  "source_file": "skimage/data/cell.png",
+  "source_url": "https://scikit-image.org/docs/0.25.x/api/skimage.data.html#skimage.data.cell",
+  "source_sha256": "8d23a7fb81f7cc877cd09f330357fc7f595651306e84e17252f6e0a1b3f61515",
+  "acquisition": "Copied byte-for-byte from the scikit-image 0.25.2 sample; hash verified against its data registry.",
+  "description": "Quantitative phase microscopy reconstructed from a digital hologram. Native spacing 0.107 micrometres/pixel.",
+  "reference": {
+    "authors": "Paul Müller, Mirjam Schürmann, Salvatore Girardo, Gheorghe Cojoc, Jochen Guck",
+    "title": "Accurate evaluation of size and refractive index for spherical objects in quantitative phase imaging",
+    "doi": "10.1364/OE.26.010729",
+    "year": 2018
+  },
+  "image_modifications": "None to original.png. Demonstration outputs are explicitly synthetic copy-move derivatives.",
+  "source_xyxy": [
+    315,
+    265,
+    535,
+    485
+  ],
+  "target_xy": [
+    40,
+    65
+  ]
+}

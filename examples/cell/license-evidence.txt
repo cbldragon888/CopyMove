@@ -1,0 +1,10 @@
+License evidence for the bundled image
+
+Source: scikit-image 0.25.2, skimage/data/_fetchers.py, cell() documentation.
+Reference: https://scikit-image.org/docs/0.25.x/api/skimage.data.html#skimage.data.cell
+
+Exact licensing statement:
+"This image is CC0, dedicated to the public domain. You may copy, modify, or distribute it without asking permission."
+
+The local installed package documentation supplied this statement. The original PNG was copied unchanged and checked against the package data registry.
+Registry SHA256: 8d23a7fb81f7cc877cd09f330357fc7f595651306e84e17252f6e0a1b3f61515

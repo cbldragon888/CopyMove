@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CopyMove Lab：一张 CC0 显微图，五种可复现的复制移动方法。交互比较、像素掩膜与开放代码。">
+  <meta name="theme-color" content="#183c32">
+  <title>CopyMove Lab — One cell. Five methods.</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="assets/demo-data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#explorer">跳至交互实验台</a>
+  <header class="site-header wrap">
+    <a class="brand" href="#top" aria-label="CopyMove Lab 首页"><span class="brand-icon" aria-hidden="true"></span><span>CopyMove <b>Lab</b></span></a>
+    <nav aria-label="主导航"><a href="#explorer">实验台 <span>01</span></a><a href="#notes">方法笔记 <span>02</span></a><a href="#reproduce">复现 <span>03</span></a></nav>
+    <span class="open-label"><i></i> OPEN RESEARCH</span>
+  </header>
+
+  <main id="top">
+    <section id="explorer" class="hero wrap" aria-labelledby="hero-title">
+      <div class="intro">
+        <div class="eyebrow"><span class="tiny-cross">+</span> AN IMAGE FORENSICS PLAYGROUND</div>
+        <h1 id="hero-title">One cell.<br>Five <em>methods.</em></h1>
+        <p class="lead">同一图像，五种融合。</p>
+        <p class="intro-copy">从直接复制到泊松融合，观察一枚细胞如何融入新的位置。选择一种方法，拖动分界线，看清每一种边界。</p>
+        <div class="method-heading"><span>选择处理方法</span><span class="mono">01 — 05</span></div>
+        <div id="methods" class="methods" role="group" aria-label="处理方法"></div>
+        <div class="method-detail" aria-live="polite"><span id="method-tag" class="eyebrow"></span><p id="method-description"></p></div>
+        <p class="synthetic-note"><span aria-hidden="true">↳</span> 人工构造的复制移动示例，用于研究与教学。</p>
+      </div>
+
+      <div class="instrument">
+        <div class="instrument-top"><span><i class="status-dot"></i> SPECIMEN 001</span><span class="mono">550 × 660 PX</span></div>
+        <div class="viewer-tabs" role="group" aria-label="查看模式">
+          <button type="button" class="selected" data-view="compare" aria-pressed="true">滑动对比</button>
+          <button type="button" data-view="result" aria-pressed="false">处理结果</button>
+          <button type="button" data-view="mask" aria-pressed="false">变化掩膜</button>
+        </div>
+        <div class="image-stage" id="image-stage">
+          <img id="original" src="assets/demo/original.png" alt="原始定量相位显微图：盐水中的一枚细胞" width="550" height="660">
+          <img id="result" class="result-layer" src="assets/demo/feather.png" alt="羽化融合后的显微图" width="550" height="660">
+          <img id="mask" class="mask-layer" src="assets/demo/feather-changes.png" alt="白色像素表示该方法实际改变的位置" width="550" height="660" hidden>
+          <svg id="annotations" class="annotations" viewBox="0 0 550 660" aria-label="虚线标记复制来源和处理区域" role="img">
+            <rect class="source-box" x="315" y="265" width="220" height="220"/>
+            <rect class="target-box" x="40" y="65" width="220" height="220"/>
+            <g class="source-tag"><rect x="315" y="240" width="84" height="25"/><text x="325" y="257">复制源</text></g>
+            <g class="target-tag"><rect x="40" y="40" width="84" height="25"/><text x="50" y="57">处理区</text></g>
+          </svg>
+          <div id="wipe-line" class="wipe-line" aria-hidden="true"><span>‹ &nbsp; ›</span></div>
+          <input id="wipe" class="wipe-input" type="range" min="0" max="100" value="58" aria-label="处理结果的显示比例" aria-valuetext="处理结果占 58%">
+          <div class="image-labels" id="image-labels" aria-hidden="true"><span>AFTER</span><span>ORIGINAL</span></div>
+        </div>
+        <div class="instrument-bottom">
+          <label class="annotation-toggle"><input type="checkbox" id="show-regions" checked><span>显示复制区域</span></label>
+          <span id="view-hint">左右拖动 · 对比原图</span>
+        </div>
+        <div class="instrument-links"><a href="assets/demo/original.png" target="_blank" rel="noopener">查看原图 ↗</a><a id="download" href="assets/demo/feather.png" download="copymove-feather.png">下载当前结果 ↓</a></div>
+      </div>
+    </section>
+
+    <div class="specimen-strip"><div class="wrap strip-inner"><span class="eyebrow">THE SPECIMEN</span><span>盐水中的细胞 <small>定量相位显微成像</small></span><span>原生像素 <small>无缩放 · 无旋转</small></span><a href="#source">CC0 原图 <span>↗</span></a></div></div>
+
+    <section class="details wrap" aria-labelledby="detail-title">
+      <div class="section-intro"><div><span class="eyebrow">A CLOSER LOOK</span><h2 id="detail-title">细节，值得放大。</h2></div><p>同一个复制事件，固定源区域与目标位置。<br>下面的局部视图随所选方法同步更新。</p></div>
+      <div class="detail-grid">
+        <figure><div class="crop-wrap"><canvas id="crop-source" width="260" height="260" aria-label="复制源区域及周边背景"></canvas><span class="crop-letter">S</span></div><figcaption><span>复制来源</span><small>Source · 保留完整细胞</small></figcaption></figure>
+        <figure><div class="crop-wrap"><canvas id="crop-before" width="260" height="260" aria-label="目标区域处理前的背景"></canvas><span class="crop-letter">A</span></div><figcaption><span>处理之前</span><small>Before · 原始目标背景</small></figcaption></figure>
+        <figure><div class="crop-wrap"><canvas id="crop-after" width="260" height="260" aria-label="目标区域处理后的结果"></canvas><span class="crop-letter accent">B</span></div><figcaption><span>处理之后</span><small id="crop-caption">After · 羽化融合</small></figcaption></figure>
+      </div>
+      <p class="detail-footnote">显示包含边缘上下文的局部裁切；下载文件始终保留原图尺寸。改变像素数量不代表融合质量。</p>
+    </section>
+
+    <section class="notes wrap" id="notes" aria-labelledby="notes-title">
+      <div class="section-intro"><div><span class="eyebrow">METHOD NOTES / 02</span><h2 id="notes-title">理解每一种边界。</h2></div><p>五种方法均在本地运行。<br>没有模型权重，也不需要 API 密钥。</p></div>
+      <div class="method-table" id="method-table"></div>
+      <div class="research-note"><span>关于这个实验</span><p>这是一张图片上的方法演示，不是算法排行榜。直接复制保留整块像素；羽化保留中心、混合边缘；色调、多尺度和泊松融合会进一步改变复制内容。所有方法仅修改目标范围，真实变化位置可在掩膜中查看。</p></div>
+    </section>
+
+    <section class="reproduce" id="reproduce" aria-labelledby="reproduce-title"><div class="wrap reproduce-inner">
+      <div><span class="eyebrow">SMALL TOOL. OPEN POSSIBILITIES.</span><h2 id="reproduce-title">把实验带回<br>你的工作台。</h2><p>下载仓库，安装依赖，使用同一张原图重现五种结果。<br>也可以换成你有权使用的图像，指定自己的复制位置。</p><div class="license-pills"><span>MIT CODE</span><span>CC0 IMAGE</span><span>PYTHON ≥ 3.10</span></div></div>
+      <div class="terminal"><div class="terminal-top"><span>QUICK START</span><button id="copy-command" type="button">复制命令</button></div><pre><code id="command">python -m pip install -e .
+
+python -m copymove_lab \
+  --image examples/cell/original.png \
+  --source 315 265 535 485 \
+  --target 40 65 \
+  --output runs/cell</code></pre><p>以上换行适用于 Bash；Windows 请合并为一行。<br>项目附有可直接使用的 AI 助手 skill。</p><span id="copy-status" role="status"></span></div>
+    </div></section>
+
+    <section class="source wrap" id="source"><span class="eyebrow">SOURCE & LICENSING</span><div><h3>让来源和方法一样透明。</h3><p>原图来自 scikit-image 的 <a href="https://scikit-image.org/docs/0.25.x/api/skimage.data.html#skimage.data.cell" target="_blank" rel="noopener">Cell floating in saline ↗</a>，以 CC0 贡献至公有领域。研究背景见 Müller et al., <i>Optics Express</i> (2018), <a href="https://doi.org/10.1364/OE.26.010729" target="_blank" rel="noopener">doi:10.1364/OE.26.010729 ↗</a>。代码采用 MIT；图像保留 CC0 来源声明。</p><a class="manifest-link" href="assets/demo/manifest.json" download>下载方法参数与文件校验信息 ↓</a></div></section>
+  </main>
+  <footer class="wrap"><a class="brand" href="#top"><span class="brand-icon" aria-hidden="true"></span><span>CopyMove <b>Lab</b></span></a><span>Built for curiosity. Designed for reproducibility.</span><a href="#top">回到顶部 ↑</a></footer>
+  <noscript><p class="noscript">交互对比需要 JavaScript。你仍可打开 <a href="assets/demo/original.png">原图</a>、<a href="assets/demo/feather.png">羽化结果</a>和<a href="assets/demo/manifest.json">参数清单</a>。</p></noscript>
+</body>
+</html>
